@@ -13,11 +13,14 @@ namespace Chat.Repositories
         private DbContext dbContext;
         private DbSet<Chat.Models.Chat> entitySet;
 
+
         public DbChatRepository(DbContext dbContext)
         {
             this.dbContext = dbContext;
             this.entitySet = this.dbContext.Set<Chat.Models.Chat>();
         }
+
+        
 
         public Chat.Models.Chat Add(Chat.Models.Chat item)
         {

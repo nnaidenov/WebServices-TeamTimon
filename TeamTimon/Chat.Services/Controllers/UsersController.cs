@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Http;
 using Chat.Models;
 using Chat.Repositories;
+using Chat.Services.Models;
 
 namespace Chat.Services.Controllers
 {
@@ -29,9 +30,17 @@ namespace Chat.Services.Controllers
         }
 
         // POST api/user
-        public void Post(User value)
+        public UserModel Post(User value)
         {
-            this.userRepository.Add(value);
+            var newUser = this.userRepository.Add(value);
+            UserModel user = new UserModel
+            {
+                UserID = newUser.UserID,
+                Username = newUser.Username,
+                SessionKey = newUser.SessionKey
+            };
+            
+            return user;
         }
 
         // PUT api/user/5
