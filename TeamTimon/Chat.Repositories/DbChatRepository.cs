@@ -8,25 +8,25 @@ using System.Threading.Tasks;
 
 namespace Chat.Repositories
 {
-    public class DbUserRepository : IRepository<User>
+    public class DbChatRepository : IRepository<Chat.Models.Chat>
     {
         private DbContext dbContext;
-        private DbSet<User> entitySet;
+        private DbSet<Chat.Models.Chat> entitySet;
 
-        public DbUserRepository(DbContext dbContext)
+        public DbChatRepository(DbContext dbContext)
         {
             this.dbContext = dbContext;
-            this.entitySet = this.dbContext.Set<User>();
+            this.entitySet = this.dbContext.Set<Chat.Models.Chat>();
         }
 
-        public User Add(User item)
+        public Chat.Models.Chat Add(Chat.Models.Chat item)
         {
             this.entitySet.Add(item);
             this.dbContext.SaveChanges();
             return item;
         }
 
-        public User Update(int id, User item)
+        public Chat.Models.Chat Update(int id, Chat.Models.Chat item)
         {
             throw new NotImplementedException();
         }
@@ -36,17 +36,17 @@ namespace Chat.Repositories
             this.entitySet.Find(id);
         }
 
-        public void Delete(User item)
+        public void Delete(Chat.Models.Chat item)
         {
             throw new NotImplementedException();
         }
 
-        public User Get(int id)
+        public Chat.Models.Chat Get(int id)
         {
             return this.entitySet.Find(id);
         }
 
-        public IQueryable<User> GetAll()
+        public IQueryable<Chat.Models.Chat> GetAll()
         {
             return this.entitySet;
         }
