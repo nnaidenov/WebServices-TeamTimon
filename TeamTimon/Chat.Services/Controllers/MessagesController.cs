@@ -17,53 +17,69 @@ namespace Chat.Services.Controllers
         private ChatEntities db = new ChatEntities();
 
         // GET api/Messages
-        public IEnumerable<Message> GetMessages()
+        public IEnumerable<Message> GetMessages(int chatId)
         {
-            var messages = db.Messages.Include(m => m.Chat).Include(m => m.User);
+            var messages = (from m in db.Messages
+                            where m.ChatID == chatId
+                            select m);
+
             return messages.AsEnumerable();
         }
 
         // GET api/Messages/5
-        public Message GetMessage(int id)
-        {
-            Message message = db.Messages.Find(id);
-            if (message == null)
-            {
-                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
-            }
+        //public Message GetMessage(int id)
+        //{
+        //    Message message = db.Messages.Find(id);
+        //    if (message == null)
+        //    {
+        //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+        //    }
 
-            return message;
-        }
+        //    return message;
+        //}
 
-        // PUT api/Messages/5
-        public HttpResponseMessage PutMessage(int id, Message message)
-        {
-            if (ModelState.IsValid && id == message.MessageID)
-            {
-                db.Entry(message).State = EntityState.Modified;
+        //// PUT api/Messages/5
+        //public HttpResponseMessage PutMessage(int id, Message message)
+        //{
+        //    if (ModelState.IsValid && id == message.MessageID)
+        //    {
+        //        db.Entry(message).State = EntityState.Modified;
 
-                try
-                {
-                    db.SaveChanges();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    return Request.CreateResponse(HttpStatusCode.NotFound);
-                }
+        //        try
+        //        {
+        //            db.SaveChanges();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            return Request.CreateResponse(HttpStatusCode.NotFound);
+        //        }
 
-                return Request.CreateResponse(HttpStatusCode.OK);
-            }
-            else
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
-        }
+        //        return Request.CreateResponse(HttpStatusCode.OK);
+        //    }
+        //    else
+        //    {
+        //        return Request.CreateResponse(HttpStatusCode.BadRequest);
+        //    }
+        //}
 
         // POST api/Messages
+
         public HttpResponseMessage PostMessage(Message message)
         {
+            var chatId = message.ChatID;
+            var chat = db.Chats.Find(chatId);
+
+            var userId = message.UserID;
+
+            if (chatId <= 0 || userId <= 0)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+            }
+
+
             if (ModelState.IsValid)
             {
+                chat.Messages.Add(message);
                 db.Messages.Add(message);
                 db.SaveChanges();
 
@@ -78,27 +94,27 @@ namespace Chat.Services.Controllers
         }
 
         // DELETE api/Messages/5
-        public HttpResponseMessage DeleteMessage(int id)
-        {
-            Message message = db.Messages.Find(id);
-            if (message == null)
-            {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
+        //public HttpResponseMessage DeleteMessage(int id)
+        //{
+        //    Message message = db.Messages.Find(id);
+        //    if (message == null)
+        //    {
+        //        return Request.CreateResponse(HttpStatusCode.NotFound);
+        //    }
 
-            db.Messages.Remove(message);
+        //    db.Messages.Remove(message);
 
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
+        //    try
+        //    {
+        //        db.SaveChanges();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        return Request.CreateResponse(HttpStatusCode.NotFound);
+        //    }
 
-            return Request.CreateResponse(HttpStatusCode.OK, message);
-        }
+        //    return Request.CreateResponse(HttpStatusCode.OK, message);
+        //}
 
         protected override void Dispose(bool disposing)
         {
