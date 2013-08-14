@@ -33,7 +33,9 @@ namespace Chat.Repositories
 
         public void Delete(int id)
         {
-            this.entitySet.Find(id);
+            var item = this.entitySet.Find(id);
+            this.entitySet.Remove(item);
+            this.dbContext.SaveChanges();
         }
 
         public void Delete(User item)
