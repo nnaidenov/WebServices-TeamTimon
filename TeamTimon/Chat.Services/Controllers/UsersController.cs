@@ -1,17 +1,15 @@
-﻿using Chat.Models;
-using Chat.Repositories;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
+using Chat.Models;
+using Chat.Repositories;
 
 namespace Chat.Services.Controllers
 {
     public class UsersController : ApiController
     {
-        private IRepository<User> userRepository;
+        private readonly IRepository<User> userRepository;
 
         public UsersController(IRepository<User> repository)
         {
@@ -21,28 +19,31 @@ namespace Chat.Services.Controllers
         // GET api/user
         public IEnumerable<User> Get()
         {
-            return userRepository.GetAll().ToList();
+            return this.userRepository.GetAll().ToList();
         }
 
         // GET api/user/5
-        public string Get(int id)
+        public User Get(int id)
         {
-            return "value";
+            return this.userRepository.Get(id);
         }
 
         // POST api/user
-        public void Post([FromBody]string value)
+        public void Post(User value)
         {
+            this.userRepository.Add(value);
         }
 
         // PUT api/user/5
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody]
+                        string value)
         {
         }
 
         // DELETE api/user/5
         public void Delete(int id)
         {
+            this.userRepository.Delete(id);
         }
     }
 }
