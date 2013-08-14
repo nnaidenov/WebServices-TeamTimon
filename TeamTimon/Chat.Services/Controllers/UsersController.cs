@@ -1,10 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Web.Http;
 using Chat.Models;
 using Chat.Repositories;
 using Chat.Services.Models;
+using System.Data;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 
 namespace Chat.Services.Controllers
 {
@@ -30,18 +38,18 @@ namespace Chat.Services.Controllers
         }
 
         // POST api/user
-        public UserModel Post(User value)
-        {
-            var newUser = this.userRepository.Add(value);
-            UserModel user = new UserModel
-            {
-                UserID = newUser.UserID,
-                Username = newUser.Username,
-                SessionKey = newUser.SessionKey
-            };
-            
-            return user;
-        }
+        //public UserModel Post(User value)
+        //{
+        //    var newUser = this.userRepository.Add(value);
+        //    UserModel user = new UserModel
+        //    {
+        //        UserID = newUser.UserID,
+        //        Username = newUser.Username,
+        //        SessionKey = newUser.SessionKey
+        //    };
+
+        //    return user;
+        //}
 
         // PUT api/user/5
         public void Put(int id, [FromBody]
@@ -54,5 +62,62 @@ namespace Chat.Services.Controllers
         {
             this.userRepository.Delete(id);
         }
+
+        [HttpPost]
+        [ActionName("register")]
+        public HttpResponseMessage RegisterUser(User user)
+        {
+            User newUser = this.userRepository.Add(user);
+            UserModel userModel = new UserModel()
+            {
+                UserID = newUser.UserID,
+                Username = newUser.Username,
+                SessionKey = newUser.SessionKey
+            };
+            var responseMsg = Request.CreateResponse(HttpStatusCode.OK, userModel);
+
+            return responseMsg;
+        }
+
+        //[HttpPost]
+        //[ActionName("login")]
+        //public HttpResponseMessage LoginUser(UserModel user)
+        //{
+        //    IQueryable<User> users = this.userRepository.GetAll();
+
+        //    var result = from u in users
+        //                 where u.Username == user.Username && u.Password == user.Password
+        //                 select u;
+
+        //    User newUser = result.FirstOrDefault();
+        //    if (newUser != null)
+        //    {
+        //        UserModel userModel = new UserModel()
+        //        {
+        //            UserID = newUser.UserID,
+        //            Username = newUser.Username,
+        //            SessionKey = newUser.SessionKey
+
+        //        };
+        //        var responseMsg = Request.CreateResponse(HttpStatusCode.OK, userModel);
+        //        return responseMsg;
+        //    }
+        //    else
+        //    {
+        //        var responseMsg = Request.CreateResponse(HttpStatusCode.NotFound);
+        //        return responseMsg;
+        //    }
+        //}
+
+        //[HttpGet]
+        //[ActionName("logout")]
+        //public HttpResponseMessage LogoutUser(string sessionKey)
+        //{
+        //    var responseMsg = this.PerformOperation(() =>
+        //    {
+        //        UsersRepository.LogoutUser(sessionKey);
+        //    });
+        //    return responseMsg;
+        //}
     }
 }

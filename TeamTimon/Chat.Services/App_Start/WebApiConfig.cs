@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace Chat.Services
 {
@@ -12,9 +14,16 @@ namespace Chat.Services
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                defaults: new { sessionkey = RouteParameter.Optional }
             );
 
+            config.Routes.MapHttpRoute(
+                name: "ActionApi",
+                routeTemplate: "api/{controller}/{action}/{sessionkey}",
+                defaults: new { sessionkey = RouteParameter.Optional }
+            );
+
+            config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
             // Uncomment the following line of code to enable query support for actions with an IQueryable or IQueryable<T> return type.
             // To avoid processing unexpected or malicious queries, use the validation settings on QueryableAttribute to validate incoming queries.
             // For more information, visit http://go.microsoft.com/fwlink/?LinkId=279712.
