@@ -14,14 +14,14 @@ namespace Chat.Services.DependencyResolver
     {
         public IDependencyScope BeginScope()
         {
-            throw new NotImplementedException();
+            return this;
         }
 
         public object GetService(Type serviceType)
         {
-            if (serviceType == typeof(UserController))
+            if (serviceType == typeof(UsersController))
             {
-                return new UserController(new DbUserRepository(new ChatEntities()));
+                return new UsersController(new DbUsersRepository(new ChatEntities()));
             }
             else
             {

@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Chat.Repositories
 {
-    public class DbUserRepository : IRepository<User>
+    public class DbUsersRepository : IRepository<User>
     {
         private DbContext dbContext;
         private DbSet<User> entitySet;
 
-        public DbUserRepository(DbContext dbContext)
+        public DbUsersRepository(DbContext dbContext)
         {
             this.dbContext = dbContext;
             this.entitySet = this.dbContext.Set<User>();

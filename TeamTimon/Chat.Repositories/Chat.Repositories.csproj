@@ -44,7 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DbUserRepository.cs" />
+    <Compile Include="DbChatRepository.cs" />
+    <Compile Include="DbMessageRepository.cs" />
+    <Compile Include="DbUsersRepository.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

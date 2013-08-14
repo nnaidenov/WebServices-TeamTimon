@@ -9,19 +9,19 @@ using System.Web.Http;
 
 namespace Chat.Services.Controllers
 {
-    public class UserController : ApiController
+    public class UsersController : ApiController
     {
         private IRepository<User> userRepository;
 
-        public UserController(IRepository<User> repository)
+        public UsersController(IRepository<User> repository)
         {
             this.userRepository = repository;
         }
 
         // GET api/user
-        public IEnumerable<string> Get()
+        public IEnumerable<User> Get()
         {
-            return new string[] { "value1", "value2" };
+            return userRepository.GetAll().ToList();
         }
 
         // GET api/user/5
