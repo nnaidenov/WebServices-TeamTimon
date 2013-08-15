@@ -31,6 +31,7 @@ namespace Chat.Services.Controllers
 
             var loggedUser = new UserLoggedModel()
             {
+                UserID = user.UserID,
                 Username = user.Username,
                 SessionKey = sessionKey
             };
@@ -38,7 +39,36 @@ namespace Chat.Services.Controllers
             return Request.CreateResponse(HttpStatusCode.Created, loggedUser);
         }
 
+        [HttpPost]
+        [ActionName("login")]
+        public HttpResponseMessage LoginUser(UserModel user)
+        {
+            IQueryable<User> users = this.userRepository.GetAll();
 
+            var result = from u in users
+                         where u.Username == user.Username && u.Password == user.Password
+                         select u;
+
+            User newUser = result.FirstOrDefault();
+            if (newUser != null)
+            {
+                var rep = new DbUsersRepository(db);
+                var sessionKey = rep.LoginUser(user.Username, user.Password);
+                UserLoggedModel userModel = new UserLoggedModel()
+                {
+                    UserID = newUser.UserID,
+                    Username = newUser.Username,
+                    SessionKey = sessionKey
+                };
+                var responseMsg = Request.CreateResponse(HttpStatusCode.OK, userModel);
+                return responseMsg;
+            }
+            else
+            {
+                var responseMsg = Request.CreateResponse(HttpStatusCode.NotFound);
+                return responseMsg;
+            }
+        }
 
 
 
@@ -84,35 +114,7 @@ namespace Chat.Services.Controllers
             this.userRepository.Delete(id);
         }
 
-        //[HttpPost]
-        //[ActionName("login")]
-        //public HttpResponseMessage LoginUser(UserModel user)
-        //{
-        //    IQueryable<User> users = this.userRepository.GetAll();
 
-        //    var result = from u in users
-        //                 where u.Username == user.Username && u.Password == user.Password
-        //                 select u;
-
-        //    User newUser = result.FirstOrDefault();
-        //    if (newUser != null)
-        //    {
-        //        UserModel userModel = new UserModel()
-        //        {
-        //            UserID = newUser.UserID,
-        //            Username = newUser.Username,
-        //            SessionKey = newUser.SessionKey
-
-        //        };
-        //        var responseMsg = Request.CreateResponse(HttpStatusCode.OK, userModel);
-        //        return responseMsg;
-        //    }
-        //    else
-        //    {
-        //        var responseMsg = Request.CreateResponse(HttpStatusCode.NotFound);
-        //        return responseMsg;
-        //    }
-        //}
 
         //[HttpGet]
         //[ActionName("logout")]
