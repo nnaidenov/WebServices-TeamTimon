@@ -9,12 +9,22 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using Chat.Models;
+using Chat.Repositories;
 
 namespace Chat.Services.Controllers
 {
     public class ChatsController : ApiController
     {
         private ChatEntities db = new ChatEntities();
+
+        [HttpPost]
+        [ActionName("create")]
+        public HttpResponseMessage CreateGame(string sessionKey, [FromBody] Chat.Models.Chat chatModel)
+        {
+            IRepository<Chat.Models.Chat> rep = new DbChatRepository(db);
+            var result = rep.Add(chatModel);
+            return Request.CreateResponse(HttpStatusCode.OK, result);
+        }
 
         // GET api/Chats
         public IEnumerable<Chat.Models.Chat> GetChats()

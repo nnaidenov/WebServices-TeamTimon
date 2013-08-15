@@ -19,13 +19,19 @@ namespace Chat.Repositories
             this.entitySet = this.dbContext.Set<Chat.Models.Chat>();
         }
 
-        public Models.Chat Add(Chat.Models.Chat item, string sessionKey, int userId)
+        public Models.Chat Add(Chat.Models.Chat item, string sessionKey)
         {
-            Console.WriteLine(sessionKey);
-            Console.WriteLine(userId);
-            this.entitySet.Add(item);
-            this.dbContext.SaveChanges();
-            return item;
+            var userId = this.dbContext.Set<User>().Where(u => u.SessionKey == sessionKey).Select(u => u.UserID).FirstOrDefault();
+           if ((int)userId > 0)
+           {
+               this.entitySet.Add(item);
+               this.dbContext.SaveChanges();
+               return item;
+           }
+           else
+           {
+               throw new ArgumentNullException();
+           }
         }
 
         public Models.Chat Update(int id, Chat.Models.Chat item)

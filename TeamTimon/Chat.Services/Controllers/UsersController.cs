@@ -13,30 +13,30 @@ namespace Chat.Services.Controllers
     public class UsersController : ApiController
     {
         private readonly IRepository<User> userRepository;
+        private ChatEntities db = new ChatEntities();
 
         public UsersController(IRepository<User> repository)
         {
             this.userRepository = repository;
         }
 
-        //[HttpPost]
-        //[ActionName("register")]
-        //public HttpResponseMessage RegisterUser(User user)
-        //{
-        //    DbUsersRepository.CreateUser(user.Username, user.Password);
+        [HttpPost]
+        [ActionName("register")]
+        public HttpResponseMessage RegisterUser(User user)
+        {
+            var rep = new DbUsersRepository(db);
+            rep.CreateUser(user.Username, user.Password);
 
-        //    var sessionKey = UsersRepository.LoginUser(user.Username, user.AuthCode, out nickname);
-        //    return new UserLoggedModel()
-        //    {
-        //        Nickname = nickname,
-        //        SessionKey = sessionKey
-        //    };
+            var sessionKey = rep.LoginUser(user.Username, user.Password);
 
-        //    return "Error";
-        //}
+            var loggedUser = new UserLoggedModel()
+            {
+                Username = user.Username,
+                SessionKey = sessionKey
+            };
 
-
-
+            return Request.CreateResponse(HttpStatusCode.Created, loggedUser);
+        }
 
 
 

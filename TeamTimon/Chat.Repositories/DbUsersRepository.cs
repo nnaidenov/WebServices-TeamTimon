@@ -41,12 +41,10 @@ namespace Chat.Repositories
             return sessionKey;
         }
 
-        public static void CreateUser(string username, string password)
+        public void CreateUser(string username, string password)
         {
             var usernameToLower = username.ToLower();
-            var context = new ChatEntities();
-            DbSet<User> entitySet = context.Set<User>();
-            var dbUser = entitySet.FirstOrDefault(u => u.Username == usernameToLower);
+            var dbUser = this.entitySet.FirstOrDefault(u => u.Username == usernameToLower);
             if (dbUser == null)
             {
                 dbUser = new User()
@@ -56,24 +54,24 @@ namespace Chat.Repositories
                };
 
                 entitySet.Add(dbUser);
-                context.SaveChanges();
+                this.dbContext.SaveChanges();
             }
         }
 
         public string LoginUser(string username, string password)
         {
-                var usernameToLower = username.ToLower();
-                var user = this.entitySet.FirstOrDefault(u => u.Username.ToLower() == usernameToLower);
-                if (user != null)
-                {
-                    var sessionKey = GenerateSessionKey();
-                    user.SessionKey = sessionKey;
-                    this.dbContext.SaveChanges();
+            var usernameToLower = username.ToLower();
+            var user = this.entitySet.FirstOrDefault(u => u.Username.ToLower() == usernameToLower);
+            if (user != null)
+            {
+                var sessionKey = GenerateSessionKey();
+                user.SessionKey = sessionKey;
+                this.dbContext.SaveChanges();
 
-                    return sessionKey;
-                }
+                return sessionKey;
+            }
 
-                return "Error";         
+            return "Error";
         }
 
         //public static int LoginUser(string sessionKey)
