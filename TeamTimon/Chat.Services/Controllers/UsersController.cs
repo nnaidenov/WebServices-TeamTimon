@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Chat.Models;
 using Chat.Repositories;
 using Chat.Services.Models;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
 
 namespace Chat.Services.Controllers
 {
@@ -24,6 +18,33 @@ namespace Chat.Services.Controllers
         {
             this.userRepository = repository;
         }
+
+        //[HttpPost]
+        //[ActionName("register")]
+        //public HttpResponseMessage RegisterUser(User user)
+        //{
+        //    DbUsersRepository.CreateUser(user.Username, user.Password);
+
+        //    var sessionKey = UsersRepository.LoginUser(user.Username, user.AuthCode, out nickname);
+        //    return new UserLoggedModel()
+        //    {
+        //        Nickname = nickname,
+        //        SessionKey = sessionKey
+        //    };
+
+        //    return "Error";
+        //}
+
+
+
+
+
+
+
+
+
+
+
 
         // GET api/user
         public IEnumerable<User> Get()
@@ -61,22 +82,6 @@ namespace Chat.Services.Controllers
         public void Delete(int id)
         {
             this.userRepository.Delete(id);
-        }
-
-        [HttpPost]
-        [ActionName("register")]
-        public HttpResponseMessage RegisterUser(User user)
-        {
-            User newUser = this.userRepository.Add(user);
-            UserModel userModel = new UserModel()
-            {
-                UserID = newUser.UserID,
-                Username = newUser.Username,
-                SessionKey = newUser.SessionKey
-            };
-            var responseMsg = Request.CreateResponse(HttpStatusCode.OK, userModel);
-
-            return responseMsg;
         }
 
         //[HttpPost]

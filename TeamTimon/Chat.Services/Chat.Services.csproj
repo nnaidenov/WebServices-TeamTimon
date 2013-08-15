@@ -301,7 +301,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chat.Models\Chat.Models.csproj">
-      <Project>{81af0ed7-1dd4-4084-807e-0a76842253ef}</Project>
+      <Project>{a01d8493-8a40-4b3b-b4fa-fc46739024e9}</Project>
       <Name>Chat.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chat.Repositories\Chat.Repositories.csproj">

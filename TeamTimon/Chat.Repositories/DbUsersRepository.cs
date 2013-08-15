@@ -16,11 +16,6 @@ namespace Chat.Repositories
         private const string SessionKeyChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         private const int SessionKeyLen = 50;
 
-        private const string ValidUsernameChars = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM_1234567890";
-        private const string ValidNicknameChars = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM_1234567890 -";
-        private const int MinUsernameNicknameChars = 4;
-        private const int MaxUsernameNicknameChars = 30;
-
         public DbUsersRepository(DbContext dbContext)
         {
             this.dbContext = dbContext;
@@ -45,6 +40,103 @@ namespace Chat.Repositories
             string sessionKey = keyChars.ToString();
             return sessionKey;
         }
+
+        public static void CreateUser(string username, string password)
+        {
+            var usernameToLower = username.ToLower();
+            var context = new ChatEntities();
+            DbSet<User> entitySet = context.Set<User>();
+            var dbUser = entitySet.FirstOrDefault(u => u.Username == usernameToLower);
+            if (dbUser == null)
+            {
+                dbUser = new User()
+               {
+                   Username = usernameToLower,
+                   Password = password
+               };
+
+                entitySet.Add(dbUser);
+                context.SaveChanges();
+            }
+        }
+
+        public string LoginUser(string username, string password)
+        {
+                var usernameToLower = username.ToLower();
+                var user = this.entitySet.FirstOrDefault(u => u.Username.ToLower() == usernameToLower);
+                if (user != null)
+                {
+                    var sessionKey = GenerateSessionKey();
+                    user.SessionKey = sessionKey;
+                    this.dbContext.SaveChanges();
+
+                    return sessionKey;
+                }
+
+                return "Error";         
+        }
+
+        //public static int LoginUser(string sessionKey)
+        //{
+        //    ValidateSessionKey(sessionKey);
+        //    var context = new BullsAndCowsEntities();
+        //    using (context)
+        //    {
+        //        var user = context.Users.FirstOrDefault(u => u.SessionKey == sessionKey);
+        //        if (user == null)
+        //        {
+        //            throw new ServerErrorException("Invalid user authentication", "INV_USR_AUTH");
+        //        }
+        //        return (int)user.Id;
+        //    }
+        //}
+
+        //public static void LogoutUser(string sessionKey)
+        //{
+        //    ValidateSessionKey(sessionKey);
+        //    var context = new BullsAndCowsEntities();
+        //    using (context)
+        //    {
+        //        var user = context.Users.FirstOrDefault(u => u.SessionKey == sessionKey);
+        //        if (user == null)
+        //        {
+        //            throw new ServerErrorException("Invalid user authentication", "INV_USR_AUTH");
+        //        }
+        //        user.SessionKey = null;
+        //        context.SaveChanges();
+        //    }
+        //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public User Add(User item)
         {

@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{81AF0ED7-1DD4-4084-807E-0A76842253EF}</ProjectGuid>
+    <ProjectGuid>{A01D8493-8A40-4B3B-B4FA-FC46739024E9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Chat.Models</RootNamespace>
@@ -32,9 +32,6 @@
   <ItemGroup>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -70,6 +67,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ChatModels.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Class1.cs" />
     <Compile Include="Message.cs">
       <DependentUpon>ChatModels.tt</DependentUpon>
     </Compile>

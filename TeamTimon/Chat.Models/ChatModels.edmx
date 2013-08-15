@@ -68,11 +68,11 @@
         </EntityType>
         <EntityType Name="UsersChats">
           <Key>
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="ChatID" />
+            <PropertyRef Name="Chats_ChatID" />
+            <PropertyRef Name="Users_UserID" />
           </Key>
-          <Property Name="UserID" Type="int" Nullable="false" />
-          <Property Name="ChatID" Type="int" Nullable="false" />
+          <Property Name="Chats_ChatID" Type="int" Nullable="false" />
+          <Property Name="Users_UserID" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_Channels_Users">
           <End Role="Users" Type="ChatModel.Store.Users" Multiplicity="1" />
@@ -118,7 +118,7 @@
               <PropertyRef Name="ChatID" />
             </Principal>
             <Dependent Role="UsersChats">
-              <PropertyRef Name="ChatID" />
+              <PropertyRef Name="Chats_ChatID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -130,7 +130,7 @@
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="UsersChats">
-              <PropertyRef Name="UserID" />
+              <PropertyRef Name="Users_UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -289,10 +289,10 @@
           </EntitySetMapping>
           <AssociationSetMapping Name="UsersChats" TypeName="ChatModel.UsersChats" StoreEntitySet="UsersChats">
             <EndProperty Name="Chats">
-              <ScalarProperty Name="ChatID" ColumnName="ChatID" />
+              <ScalarProperty Name="ChatID" ColumnName="Chats_ChatID" />
             </EndProperty>
             <EndProperty Name="Users">
-              <ScalarProperty Name="UserID" ColumnName="UserID" />
+              <ScalarProperty Name="UserID" ColumnName="Users_UserID" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>
@@ -311,6 +311,7 @@
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
